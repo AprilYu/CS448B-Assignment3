@@ -8,7 +8,22 @@
   <link href="style.css" rel="stylesheet">
 </head>
 <body>
-  <div id="map">
+  <div id="container">
+    <div id="map">
+    </div>
+    <div id="filters">
+      <span id="filterRadius">
+        <p>Select cirlce:</p>
+        <input type="radio" id="circleA" name="circleRadio" checked="checked"> A<br>
+        <input type="radio" id="circleB" name="circleRadio" > B<br>
+
+        <label for="radius">Radius</label>
+        <input type="range" min="0" max="100" value="50" id="fader" step="1" oninput="radiusUpdate(value)">
+        <output for="radius" id="radiusSlider">50</output>
+      </span>
+
+
+    </div>
   </div>
 
 </body>

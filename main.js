@@ -1,3 +1,20 @@
+/*
+ * Called when the slider is changing, updates the radius of the circle that
+ * correspondes to the radio button selection
+ */
+function radiusUpdate(vol) {
+	document.querySelector('#radiusSlider').value = vol;
+  //if radius is small, make border proportional to radius. if radius large, cap at 5
+  var radius = Math.min(5, ((vol/10) * 30)/20);
+  if (document.getElementById('circleA').checked){
+    circle1.attr("r", (vol/10) * 30 + "px");
+    circle1.style("stroke-width", radius);
+  }else{
+    circle2.attr("r", (vol/10) * 30 + "px");
+    circle2.style("stroke-width", radius);
+  }
+}
+
 // Set up size
 var width = 750,
 	height = width;
@@ -57,7 +74,7 @@ d3.json("data/scpd_incidents.json", function(error, json) {
   .attr("cy", function (d) { return projection(d)[1]; })
   .attr("r", "2px")
   // .call(drag)
-  .attr("fill", "red");
+  .attr("fill", "#59c346");
 
   aa = [-122.490402, 37.786453];
   bb = [-122.389809, 37.72728];
@@ -70,7 +87,11 @@ d3.json("data/scpd_incidents.json", function(error, json) {
   .attr("cy", function (d) { return projection(d)[1]; })
   .attr("r", "20px")
   .call(drag1)
-  .attr("fill", "blue");
+  .attr("fill", "none")
+  .style("stroke", "#1d7aed")
+  .style("fill", "gray")
+  .style("fill-opacity", 0.4)
+  .style("stroke-width", 2);
 
   circle2 = svg.selectAll("dragPoint")
   .data([bb]).enter()
@@ -81,6 +102,10 @@ d3.json("data/scpd_incidents.json", function(error, json) {
   .attr("cy", function (d) { return projection(d)[1]; })
   .attr("r", "20px")
   .call(drag2)
-  .attr("fill", "blue");
+  .attr("fill", "none")
+  .style("stroke", "#1d7aed")
+  .style("fill", "gray")
+  .style("fill-opacity", 0.4)
+  .style("stroke-width", 2);
 
 });
