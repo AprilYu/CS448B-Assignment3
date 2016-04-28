@@ -5,9 +5,9 @@
 function radiusUpdate(vol) {
 	document.querySelector('#radiusSlider').value = vol;
   //if radius is small, make border proportional to radius. Limit between 2 and 5, regardless
-	var propRadius = ((vol/10)*30/20)
+	var propRadius = ((vol/10)*30/20);
 	var radius = Math.min(5, propRadius);
-	radius = Math.max(2, radius)
+	radius = Math.max(2, radius);
   if (document.getElementById('circleA').checked){
     circle1.attr("r", (vol/10) * 30 + "px");
     circle1.style("stroke-width", radius);
@@ -15,6 +15,28 @@ function radiusUpdate(vol) {
     circle2.attr("r", (vol/10) * 30 + "px");
     circle2.style("stroke-width", radius);
   }
+}
+
+/*
+ * Called when filter button is pushed, filters to only points in the overlap
+ * of the two circles
+ */
+function filterPoints() {
+	var radius1 = parseInt(circle1.attr("r"));
+	var radius2 = parseInt(circle2.attr("r"));
+	var center1 = [circle1.attr("cx"), circle1.attr("cy")]
+	var center2 = [circle2.attr("cx"), circle2.attr("cy")]
+	var distance = Math.sqrt(Math.pow(center1[0]-center2[0], 2) + Math.pow(center1[1]-center2[1], 2))
+	var sum_radii = radius1+radius2
+	var diff_radii = Math.abs(radius1-radius2)
+	console.log("distance: " + distance)
+	console.log("sum: " + sum_radii)
+	console.log("difference: " + diff_radii)
+	if (distance < sum_radii && distance > diff_radii) {
+		console.log("overlap")
+	} else {
+		console.log("no overlap")
+	}
 }
 
 // Set up size
