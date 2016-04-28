@@ -4,12 +4,14 @@
  */
 function radiusUpdate(vol) {
 	document.querySelector('#radiusSlider').value = vol;
-  //if radius is small, make border proportional to radius. if radius large, cap at 5
-  var radius = Math.min(5, ((vol/10) * 30)/20);
+  //if radius is small, make border proportional to radius. Limit between 2 and 5, regardless
+	var propRadius = ((vol/10)*30/20)
+	var radius = Math.min(5, propRadius);
+	radius = Math.max(2, radius)
   if (document.getElementById('circleA').checked){
     circle1.attr("r", (vol/10) * 30 + "px");
     circle1.style("stroke-width", radius);
-  }else{
+  } else {
     circle2.attr("r", (vol/10) * 30 + "px");
     circle2.style("stroke-width", radius);
   }
@@ -32,7 +34,7 @@ var svg = d3.select("#map").append("svg")
 
 // Add svg map at correct size, assumes map is saved in a subdirectory called "data"
 svg.append("image")
-          .attr("width", width)
+      		.attr("width", width)
           .attr("height", height)
           .attr("xlink:href", "data/sf-map.svg");
 
@@ -85,7 +87,7 @@ d3.json("data/scpd_incidents.json", function(error, json) {
      return projection(d)[0];
    })
   .attr("cy", function (d) { return projection(d)[1]; })
-  .attr("r", "20px")
+  .attr("r", "18px")
   .call(drag1)
   .attr("fill", "none")
   .style("stroke", "#1d7aed")
@@ -100,7 +102,7 @@ d3.json("data/scpd_incidents.json", function(error, json) {
      return projection(d)[0];
    })
   .attr("cy", function (d) { return projection(d)[1]; })
-  .attr("r", "20px")
+  .attr("r", "18px")
   .call(drag2)
   .attr("fill", "none")
   .style("stroke", "#1d7aed")
