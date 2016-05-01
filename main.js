@@ -19,7 +19,7 @@ function radiusUpdate(vol) {
 
 var categoryFilter = [];
 function initCategoryFilters(){
-	var boxes = document.getElementsByClassName("checkbox");
+	var boxes = document.getElementsByClassName("categoryCheckbox");
 	for (var i = 0; i < boxes.length; i++){
 		var box = boxes[i];
 		if (box.checked){
@@ -31,7 +31,7 @@ initCategoryFilters();
 function changeCategoryFilter(checkbox){
 	var allBox = document.getElementById("allBox");
 	var noneBox = document.getElementById("noneBox");
-	var boxes = document.getElementsByClassName("checkbox");
+	var boxes = document.getElementsByClassName("categoryCheckbox");
 	var i, box;
 	if (checkbox.name === "All"){
 		noneBox.checked = false;
@@ -54,8 +54,10 @@ function changeCategoryFilter(checkbox){
 			noneBox.checked = false;
 		}else{
 			var index = categoryFilter.indexOf(checkbox.name);
+
 			if (index > -1){
 				categoryFilter.splice(index, 1);
+				allBox.checked = false;
 			}
 		}
 
@@ -63,6 +65,43 @@ function changeCategoryFilter(checkbox){
 
 	console.log(categoryFilter);
 }
+
+var daysOfWeekFilter = [];
+function initDaysOfWeekFilter(){
+	var boxes = document.getElementsByClassName("daysOfWeekCheckbox");
+	for (var i = 0; i < boxes.length; i++){
+		var box = boxes[i];
+		if (box.checked){
+			daysOfWeekFilter.push(convertWeekdayAbreviations(box.name));
+		}
+	}
+	console.log(daysOfWeekFilter);
+}
+function convertWeekdayAbreviations(day){
+	var conversions = {
+		"mo" : "Monday",
+		"tu" : "Tuesday",
+		"we" : "Wednesday",
+		"th" : "Thursday",
+		"fr" : "Friday",
+		"sa" : "Saturday",
+		"su" : "Sunday"
+	};
+	return conversions[day];
+}
+
+function changeDayOfWeekFilter(checkbox){
+	if (checkbox.checked){
+		daysOfWeekFilter.push(convertWeekdayAbreviations(checkbox.name));
+	}else{
+		var index = daysOfWeekFilter.indexOf(convertWeekdayAbreviations(checkbox.name));
+		if (index > -1){
+			daysOfWeekFilter.splice(index, 1);
+		}
+	}
+	console.log(daysOfWeekFilter);
+}
+initDaysOfWeekFilter();
 /*
 * Called when filter button is pushed, filters to only points in the overlap
 * of the two circles
