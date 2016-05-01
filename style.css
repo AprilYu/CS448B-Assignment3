@@ -15,7 +15,11 @@
 }
 #filterRadius{
 }
-
+.checkbox-grid li {
+    display: block;
+    float: left;
+    width: 50%;
+}
 
 /*CSS for the double input slider */
 section.range-slider {
