@@ -120,7 +120,7 @@ function filterPoints() {
 	if (distance < sum_radii && distance > diff_radii) {
 		update({"overlap":true});
 	} else {
-		console.log("no overlap");
+		update({"overlap":false})
 	}
 }
 
@@ -153,8 +153,6 @@ function update(filters) {
 			if (dist1 < radius1 && dist2 < radius2) {
 				plottedPoints.push(object);
 			}
-		} else {
-			plottedPoints.push(object);
 		}
 	}
 
@@ -214,19 +212,19 @@ svg.append("image")
 
 var circle1;
 var drag1 = d3.behavior.drag()
-.on('dragstart', function() { console.log("start drag"); })
-.on('drag', function() { console.log("drag");
-circle1.attr('cx', d3.event.x)
-.attr('cy', d3.event.y); })
-.on('dragend', function() { console.log("end drag"); });
+.on('dragstart', function() { filterPoints();})
+.on('drag', function() { circle1.attr('cx', d3.event.x)
+.attr('cy', d3.event.y);
+filterPoints();})
+.on('dragend', function() {filterPoints();});
 
 var circle2;
 var drag2 = d3.behavior.drag()
-.on('dragstart', function() { console.log("start drag"); })
-.on('drag', function() { console.log("drag");
-circle2.attr('cx', d3.event.x)
-.attr('cy', d3.event.y); })
-.on('dragend', function() { console.log("end drag"); });
+.on('dragstart', function() {filterPoints();})
+.on('drag', function() { circle2.attr('cx', d3.event.x)
+.attr('cy', d3.event.y);
+filterPoints();})
+.on('dragend', function() {filterPoints();});
 
 p1=[7,7];
 p2=[12,12];
