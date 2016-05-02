@@ -5,15 +5,16 @@
 function radiusUpdate(vol) {
 	document.querySelector('#radiusSlider').value = vol;
 	//if radius is small, make border proportional to radius. Limit between 2 and 5, regardless
-	var propRadius = ((vol/10)*30/20);
-	var radius = Math.min(5, propRadius);
-	radius = Math.max(2, radius);
+	pixel_radius = vol * milesToPixels;
+	var temp_stroke = pixel_radius / 20;
+	var stroke = Math.min(5, temp_stroke);
+	stroke = Math.max(2, stroke);
 	if (document.getElementById('circleA').checked){
-		circle1.attr("r", (vol/10) * 30 + "px");
-		circle1.style("stroke-width", radius);
+		circle1.attr("r", pixel_radius + "px");
+		circle1.style("stroke-width", stroke);
 	} else {
-		circle2.attr("r", (vol/10) * 30 + "px");
-		circle2.style("stroke-width", radius);
+		circle2.attr("r", pixel_radius + "px");
+		circle2.style("stroke-width", stroke);
 	}
 	filterPoints();
 }
@@ -111,8 +112,8 @@ initDaysOfWeekFilter();
 * of the two circles
 */
 function filterPoints() {
-	var radius1 = parseInt(circle1.attr("r"));
-	var radius2 = parseInt(circle2.attr("r"));
+	var radius1 = parseFloat(circle1.attr("r"));
+	var radius2 = parseFloat(circle2.attr("r"));
 	var center1 = [circle1.attr("cx"), circle1.attr("cy")];
 	var center2 = [circle2.attr("cx"), circle2.attr("cy")];
 	var distance = dist(center1, center2);
@@ -150,10 +151,10 @@ function update(filters) {
 		var center1 = [circle1.attr("cx"), circle1.attr("cy")];
 		var center2 = [circle2.attr("cx"), circle2.attr("cy")];
 		if (filters["overlap"]) {
-			var dist1 = d3.geo.distance(object.Location, projection.invert(center1));
-			var dist2 = d3.geo.distance(object.Location, projection.invert(center2));
-			var radius1 = parseInt(circle1.attr("r")) * pixelToMiles;
-			var radius2 = parseInt(circle2.attr("r")) * pixelToMiles;
+			var dist1 = d3.geo.distance(object.Location, projection.invert(center1)) * earth_radius_mi;
+			var dist2 = d3.geo.distance(object.Location, projection.invert(center2)) * earth_radius_mi;
+			var radius1 = parseFloat(circle1.attr("r")) * pixelsToMiles;
+			var radius2 = parseFloat(circle2.attr("r")) * pixelsToMiles;
 			if (!(dist1 < radius1 && dist2 < radius2)) continue;
 			//does objects day of week pass filter
 			var foundInDayOfWeekFilter = false;
@@ -251,15 +252,22 @@ var drag2 = d3.behavior.drag()
 filterPoints();})
 .on('dragend', function() {filterPoints();});
 
-p1=[7,7];
-p2=[12,12];
-pixel_dist = dist(p1, p2);
-geo_dist = d3.geo.distance(projection.invert(p1), projection.invert(p2));
-var pixelToMiles = geo_dist / pixel_dist;
-
 aa = [-122.490402, 37.786453];
 bb = [-122.389809, 37.72728];
-console.log(d3.geo.distance(aa,bb));
+var earth_radius_mi = 3959;
+pixel_dist = dist(projection(aa), projection(bb));
+geo_dist = d3.geo.distance(aa, bb) * earth_radius_mi;
+var pixelsToMiles = geo_dist / pixel_dist;
+var milesToPixels = pixel_dist / geo_dist;
+
+console.log("pixels: " + pixel_dist)
+console.log("miles: "+ geo_dist)
+
+rad = document.querySelector('#radiusSlider').value;
+
+console.log(parseFloat(rad) * milesToPixels)
+console.log(milesToPixels)
+
 circle1 = svg.selectAll("dragPoint")
 .data([aa]).enter()
 .append("circle")
@@ -267,7 +275,7 @@ circle1 = svg.selectAll("dragPoint")
 	return projection(d)[0];
 })
 .attr("cy", function (d) { return projection(d)[1]; })
-.attr("r", "18px")
+.attr("r", (parseFloat(rad) * milesToPixels) + "px")
 .call(drag1)
 .attr("fill", "none")
 .style("stroke", "#1d7aed")
@@ -282,7 +290,7 @@ circle2 = svg.selectAll("dragPoint")
 	return projection(d)[0];
 })
 .attr("cy", function (d) { return projection(d)[1]; })
-.attr("r", "18px")
+.attr("r", (parseFloat(rad) * milesToPixels) +"px")
 .call(drag2)
 .attr("fill", "none")
 .style("stroke", "#1d7aed")
