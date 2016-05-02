@@ -100,6 +100,7 @@ function changeDayOfWeekFilter(checkbox){
 			daysOfWeekFilter.splice(index, 1);
 		}
 	}
+	update({"overlap":true});
 	console.log(daysOfWeekFilter);
 }
 initDaysOfWeekFilter();
@@ -135,7 +136,7 @@ function loadData(filters) {
 	d3.json("data/scpd_incidents.json", function(error, json) {
 		// add circles to svg
 		allPoints = json["data"];
-	  update({"overlap": false});
+		update({"overlap": false});
 	});
 }
 
@@ -151,9 +152,18 @@ function update(filters) {
 			var dist2 = d3.geo.distance(object.Location, projection.invert(center2));
 			var radius1 = parseInt(circle1.attr("r")) * pixelToMiles;
 			var radius2 = parseInt(circle2.attr("r")) * pixelToMiles;
-			if (dist1 < radius1 && dist2 < radius2) {
-				plottedPoints.push(object);
+			if (!(dist1 < radius1 && dist2 < radius2)) continue;
+			//does objects day of week pass filter
+			var foundInDayOfWeekFilter = false;
+			for (var j = 0; j < daysOfWeekFilter.length; j++){
+				if (object.DayOfWeek === daysOfWeekFilter[j]){
+					foundInDayOfWeekFilter = true;
+					break;
+				}
 			}
+			if (!foundInDayOfWeekFilter) continue;
+			plottedPoints.push(object);
+
 		}
 	}
 
@@ -166,8 +176,8 @@ function update(filters) {
 	selection.enter()
 	.append("circle")
 	.attr("cx", function (d) {
-		 return projection(d.Location)[0];
-	 })
+		return projection(d.Location)[0];
+	})
 	.attr("cy", function (d) { return projection(d.Location)[1]; })
 	.attr("r", "2px")
 	.attr("class", "circle")
