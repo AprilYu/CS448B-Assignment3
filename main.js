@@ -117,7 +117,7 @@ function filterPoints() {
 	// console.log("distance: " + distance)
 	// console.log("sum: " + sum_radii)
 	// console.log("difference: " + diff_radii)
-	if (distance < sum_radii && distance > diff_radii) {
+	if (distance < sum_radii) {
 		update({"overlap":true});
 	} else {
 		update({"overlap":false})
