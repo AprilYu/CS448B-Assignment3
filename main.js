@@ -15,6 +15,7 @@ function radiusUpdate(vol) {
 		circle2.attr("r", (vol/10) * 30 + "px");
 		circle2.style("stroke-width", radius);
 	}
+	filterPoints();
 }
 
 var categoryFilter = [];
