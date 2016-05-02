@@ -55,8 +55,8 @@ function loadData(filters) {
 			var center1 = [circle1.attr("cx"), circle1.attr("cy")];
 			var center2 = [circle2.attr("cx"), circle2.attr("cy")];
 			if (filters["overlap"]) {
-				var dist1 = d3.geo.distance(object.Location, projection(center1));
-				var dist2 = d3.geo.distance(object.Location, projection(center2));
+				var dist1 = d3.geo.distance(object.Location, projection.invert(center1));
+				var dist2 = d3.geo.distance(object.Location, projection.invert(center2));
 				var radius1 = parseInt(circle1.attr("r")) * pixelToMiles;
 				var radius2 = parseInt(circle2.attr("r")) * pixelToMiles;
 				// console.log("projection1: " + projection(center1));
@@ -85,10 +85,14 @@ function loadData(filters) {
 	  .attr("r", "2px")
 	  // .call(drag)
 	  .attr("fill", "#59c346");
+
+		circle1.moveToFront();
+		circle2.moveToFront();
 	});
-	circle1.moveToFront();
-	circle2.moveToFront();
 }
+
+// projection is log lat to x y
+// invert is x y to log lat
 
 d3.selection.prototype.moveToFront = function() {
 	return this.each(function() {
@@ -137,7 +141,7 @@ var drag1 = d3.behavior.drag()
 p1=[7,7];
 p2=[12,12];
 pixel_dist = dist(p1, p2);
-geo_dist = d3.geo.distance(projection(p1), projection(p2));
+geo_dist = d3.geo.distance(projection.invert(p1), projection.invert(p2));
 var pixelToMiles = geo_dist / pixel_dist;
 
 aa = [-122.490402, 37.786453];
