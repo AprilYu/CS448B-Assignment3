@@ -129,12 +129,12 @@ function dist(c1, c2) {
 }
 var allPoints;
 var plottedPoints = [];
-function loadData(filters) {
+function loadData() {
 	// load and display the data
 	d3.json("data/scpd_incidents.json", function(error, json) {
 		// add circles to svg
 		allPoints = json["data"];
-	  update();
+	  update({"overlap": false});
 	});
 }
 
@@ -157,7 +157,8 @@ function update(filters) {
 			plottedPoints.push(object);
 		}
 	}
-	console.log(locationsToPlot.length)
+	console.log("all points: " + allPoints.length);
+	console.log("plotted points: " + plottedPoints.length);
 
 	var selection = svg.selectAll("circle")
 	.data(plottedPoints, function(d) {
@@ -177,8 +178,8 @@ function update(filters) {
 
 	selection.exit().remove();
 
-	circle1.moveToFront();
-	circle2.moveToFront();
+	// circle1.moveToFront();
+	// circle2.moveToFront();
 }
 
 // projection is log lat to x y
@@ -236,7 +237,6 @@ var pixelToMiles = geo_dist / pixel_dist;
 
 aa = [-122.490402, 37.786453];
 bb = [-122.389809, 37.72728];
-console.log(d3.geo.distance(aa,bb));
 circle1 = svg.selectAll("dragPoint")
 .data([aa]).enter()
 .append("circle")
@@ -267,4 +267,4 @@ circle2 = svg.selectAll("dragPoint")
 .style("fill-opacity", 0.4)
 .style("stroke-width", 2);
 
-loadData({"overlap":false});
+loadData();
