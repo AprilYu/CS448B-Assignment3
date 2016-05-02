@@ -134,7 +134,7 @@ function loadData(filters) {
 	d3.json("data/scpd_incidents.json", function(error, json) {
 		// add circles to svg
 		allPoints = json["data"];
-	  update();
+	  update({"overlap": false});
 	});
 }
 
@@ -157,11 +157,10 @@ function update(filters) {
 			plottedPoints.push(object);
 		}
 	}
-	console.log(locationsToPlot.length)
 
-	var selection = svg.selectAll("circle")
+	var selection = svg.selectAll(".circle")
 	.data(plottedPoints, function(d) {
-		id = new String(d.Description) + new String (d.IncidentNumber);
+		var id = new String(d.Description) + new String (d.IncidentNumber);
 		return id;
 	});
 
@@ -172,6 +171,7 @@ function update(filters) {
 	 })
 	.attr("cy", function (d) { return projection(d.Location)[1]; })
 	.attr("r", "2px")
+	.attr("class", "circle")
 	// .call(drag)
 	.attr("fill", "#59c346");
 
