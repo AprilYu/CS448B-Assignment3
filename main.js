@@ -134,31 +134,30 @@ function loadData(filters) {
 	d3.json("data/scpd_incidents.json", function(error, json) {
 		// add circles to svg
 		allPoints = json["data"];
-		//json['data'].length
-		// for (var i = 0; i < json.data.length; i++){
-		// 	var object = json.data[i];
-		// 	// var center1 = [circle1.attr("cx"), circle1.attr("cy")];
-		// 	// var center2 = [circle2.attr("cx"), circle2.attr("cy")];
-		// 	// if (filters["overlap"]) {
-		// 	// 	var dist1 = d3.geo.distance(object.Location, projection.invert(center1));
-		// 	// 	var dist2 = d3.geo.distance(object.Location, projection.invert(center2));
-		// 	// 	var radius1 = parseInt(circle1.attr("r")) * pixelToMiles;
-		// 	// 	var radius2 = parseInt(circle2.attr("r")) * pixelToMiles;
-		// 	// 	if (dist1 < radius1 && dist2 < radius2) {
-		// 	// 		locationsToPlot.push(object);
-		// 	// 	}
-		// 	// } else {
-		// 	// 	locationsToPlot.push(object);
-		// 	// }
-	  // }
-		// console.log(locationsToPlot.length)
-	  // add circles to svg
 	  update();
 	});
 }
 
 function update(filters) {
 	plottedPoints = [];
+
+	for (var i = 0; i < allPoints.length; i++){
+		var object = allPoints[i];
+		var center1 = [circle1.attr("cx"), circle1.attr("cy")];
+		var center2 = [circle2.attr("cx"), circle2.attr("cy")];
+		if (filters["overlap"]) {
+			var dist1 = d3.geo.distance(object.Location, projection.invert(center1));
+			var dist2 = d3.geo.distance(object.Location, projection.invert(center2));
+			var radius1 = parseInt(circle1.attr("r")) * pixelToMiles;
+			var radius2 = parseInt(circle2.attr("r")) * pixelToMiles;
+			if (dist1 < radius1 && dist2 < radius2) {
+				plottedPoints.push(object);
+			}
+		} else {
+			plottedPoints.push(object);
+		}
+	}
+	console.log(locationsToPlot.length)
 
 	var selection = svg.selectAll("circle")
 	.data(plottedPoints, function(d) {
