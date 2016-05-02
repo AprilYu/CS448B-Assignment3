@@ -65,6 +65,8 @@ function changeCategoryFilter(checkbox){
 	}
 
 	console.log(categoryFilter);
+	update({"overlap":true});
+
 }
 
 var daysOfWeekFilter = [];
@@ -162,6 +164,18 @@ function update(filters) {
 				}
 			}
 			if (!foundInDayOfWeekFilter) continue;
+
+			var foundInCategoryFilter = false;
+			for (var jj = 0; jj < categoryFilter.length; jj++){
+				// console.log("Object category " + object.Category);
+				// console.log("Finding " + categoryFilter[jj]);
+				if (object.Category.toLowerCase().indexOf(categoryFilter[jj].toLowerCase()) != -1){
+					foundInCategoryFilter = true;
+					break;
+				}
+			}
+			if (!foundInCategoryFilter) continue;
+
 			plottedPoints.push(object);
 
 		}
