@@ -36,13 +36,13 @@ function getVals(){
   if( slide1 > slide2 ){ var tmp = slide2; slide2 = slide1; slide1 = tmp; }
 	// slider 2 is the larger one
   var displayElement = parent.getElementsByClassName("rangeValues")[0];
-      displayElement.innerHTML = parseTime(slide1) + " - " + parseTime(slide2);
+      displayElement.innerHTML = parseTimeFromMinutes(slide1) + " - " + parseTimeFromMinutes(slide2);
 		timePoints.push(slide1);
 		timePoints.push(slide2);
 		filterPoints();
 }
 
-function parseTime(val) {
+function parseTimeFromMinutes(val) {
 	var hour = Math.floor(val / 60);
 	var ampm;
 	if (hour < 12) {
@@ -62,19 +62,40 @@ function parseTime(val) {
 	return hour + ":" + minute + " " + ampm;
 }
 
+function parseMinutesFromTime(val) {
+	var hour = parseInt(val.substring(0, val.indexOf(':')));
+	var minute = parseInt(val.substring(val.indexOf(':')+1, val.indexOf(':') + 3));
+	if (val.length>5) {
+		var ampm = val.substring(val.indexOf(':') + 3)
+		if (ampm == "am") {
+			if (hour == 12) {
+				hour = 0;
+			}
+		} else {
+			if (hour != 12) {
+				hour = hour + 12
+			}
+		}
+	}
+	return hour * 60 + minute;
+}
+
 window.onload = function(){
-  // Initialize Sliders
-  var sliderSections = document.getElementsByClassName("range-slider");
-      for( var x = 0; x < sliderSections.length; x++ ){
-        var sliders = sliderSections[x].getElementsByTagName("input");
-        for( var y = 0; y < sliders.length; y++ ){
-          if( sliders[y].type ==="range" ){
-            sliders[y].oninput = getVals;
-            // Manually trigger event first time to display values
-            sliders[y].oninput();
-          }
-        }
-      }
+	// load data immediately
+	loadData({"overlap":false});
+
+	// Initialize Sliders
+	var sliderSections = document.getElementsByClassName("range-slider");
+			for( var x = 0; x < sliderSections.length; x++ ){
+				var sliders = sliderSections[x].getElementsByTagName("input");
+				for( var y = 0; y < sliders.length; y++ ){
+					if( sliders[y].type ==="range" ){
+						sliders[y].oninput = getVals;
+						// Manually trigger event first time to display values
+						sliders[y].oninput();
+					}
+				}
+			}
 };
 
 var categoryFilter = [];
@@ -237,8 +258,9 @@ function update(filters) {
 		if (!foundInCategoryFilter) continue;
 
 
-		var t = object.Time.substring(0, object.Time.indexOf(':'));
-		if (parseInt(t) < parseInt(timePoints[0]) || parseInt(t) > parseInt(timePoints[1])) continue;
+		// var t = object.Time.substring(0, object.Time.indexOf(':'));
+		var t = object.Time
+		if (parseMinutesFromTime(t) < timePoints[0] || parseMinutesFromTime(t) > timePoints[1]) continue;
 
 		plottedPoints.push(object);
 
@@ -405,5 +427,3 @@ circle2 = svg.selectAll("dragPoint")
 .style("fill-opacity", 0.4)
 .style("visibility", "hidden")
 .style("stroke-width", 2);
-
-loadData({"overlap":false});
