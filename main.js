@@ -84,18 +84,16 @@ window.onload = function(){
 	// load data immediately
 	loadData({"overlap":false});
 
-	// Initialize Sliders
-	var sliderSections = document.getElementsByClassName("range-slider");
-			for( var x = 0; x < sliderSections.length; x++ ){
-				var sliders = sliderSections[x].getElementsByTagName("input");
-				for( var y = 0; y < sliders.length; y++ ){
-					if( sliders[y].type ==="range" ){
-						sliders[y].oninput = getVals;
-						// Manually trigger event first time to display values
-						sliders[y].oninput();
-					}
-				}
-			}
+// 	// Initialize Sliders
+// 	var slides = document.getElementsByTagName("input");
+// 	var displayElement = document.getElementsByClassName("rangeValues")[0];
+// 	var slide1 = parseInt( slides[0].value );
+// 	var slide2 = parseInt( slides[1].value );
+// // Neither slider will clip the other, so make sure we determine which is larger
+// if( slide1 > slide2 ){ var tmp = slide2; slide2 = slide1; slide1 = tmp; }
+// // slider 2 is the larger one
+// var displayElement = document.getElementsByClassName("rangeValues")[0];
+// 		displayElement.innerHTML = parseTimeFromMinutes(slide1) + " - " + parseTimeFromMinutes(slide2);
 };
 
 var categoryFilter = [];
@@ -216,7 +214,19 @@ function loadData(filters) {
 		// add circles to svg
 		allPoints = json["data"];
 		update({"overlap": false});
+		var sliderSections = document.getElementsByClassName("range-slider");
+				for( var x = 0; x < sliderSections.length; x++ ){
+					var sliders = sliderSections[x].getElementsByTagName("input");
+					for( var y = 0; y < sliders.length; y++ ){
+						if( sliders[y].type ==="range" ){
+							sliders[y].oninput = getVals;
+							// Manually trigger event first time to display values
+							sliders[y].oninput();
+						}
+					}
+				}
 	});
+
 }
 
 function update(filters) {
