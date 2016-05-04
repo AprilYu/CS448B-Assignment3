@@ -3,7 +3,7 @@
 * correspondes to the radio button selection
 */
 function radiusUpdate(vol) {
-	document.querySelector('#radiusSlider').value = vol;
+	document.querySelector('#radiusSlider').value = vol + " mi";
 	//if radius is small, make border proportional to radius. Limit between 2 and 5, regardless
 	pixel_radius = vol * milesToPixels;
 	var temp_stroke = pixel_radius / 20;
@@ -12,12 +12,16 @@ function radiusUpdate(vol) {
 	if (document.getElementById('circleA').checked){
 		circle1.attr("r", pixel_radius + "px");
 		circle1.style("stroke-width", stroke);
+		document.getElementById("circleA").value = vol;
+
 	} else {
 		circle2.attr("r", pixel_radius + "px");
 		circle2.style("stroke-width", stroke);
+		document.getElementById("circleB").value = vol;
 	}
 	filterPoints();
 }
+
 
 var categoryFilter = [];
 function initCategoryFilters(){
@@ -235,10 +239,30 @@ svg.append("image")
 .attr("height", height)
 .attr("xlink:href", "data/sf-map.svg");
 
+function makeCircleActive(circle){
+	if (circle === circle1){
+		if (document.getElementById('circleB').checked){
+			document.getElementById('circleA').checked = true;
+			document.getElementById('circleB').checked = false;
+		}
+		document.getElementById('slider').value = document.getElementById('circleA').value;
+		document.getElementById('radiusSlider').innerHTML = document.getElementById('circleA').value + " mi";
+	}else{
+		if (document.getElementById('circleA').checked){
+			document.getElementById('circleB').checked = true;
+			document.getElementById('circleA').checked = false;
+		}
+		document.getElementById('slider').value = document.getElementById('circleB').value;
+		document.getElementById('radiusSlider').innerHTML = document.getElementById('circleB').value + " mi";
+	}
+}
 
 var circle1;
 var drag1 = d3.behavior.drag()
-.on('dragstart', function() { filterPoints();})
+.on('dragstart', function() {
+	filterPoints();
+	makeCircleActive(circle1);
+})
 .on('drag', function() { circle1.attr('cx', d3.event.x)
 .attr('cy', d3.event.y);
 filterPoints();})
@@ -246,11 +270,26 @@ filterPoints();})
 
 var circle2;
 var drag2 = d3.behavior.drag()
-.on('dragstart', function() {filterPoints();})
+.on('dragstart', function() {
+	filterPoints();
+	makeCircleActive(circle2);
+
+})
 .on('drag', function() { circle2.attr('cx', d3.event.x)
 .attr('cy', d3.event.y);
 filterPoints();})
 .on('dragend', function() {filterPoints();});
+
+
+function radioButton(value){
+	console.log("radio");
+	if (value === 1){
+		makeCircleActive(circle1);
+	}else{
+		makeCircleActive(circle2);
+	}
+}
+
 
 aa = [-122.490402, 37.786453];
 bb = [-122.389809, 37.72728];
@@ -260,13 +299,13 @@ geo_dist = d3.geo.distance(aa, bb) * earth_radius_mi;
 var pixelsToMiles = geo_dist / pixel_dist;
 var milesToPixels = pixel_dist / geo_dist;
 
-console.log("pixels: " + pixel_dist)
-console.log("miles: "+ geo_dist)
+console.log("pixels: " + pixel_dist);
+console.log("miles: "+ geo_dist);
 
 rad = document.querySelector('#radiusSlider').value;
 
-console.log(parseFloat(rad) * milesToPixels)
-console.log(milesToPixels)
+console.log(parseFloat(rad) * milesToPixels);
+console.log(milesToPixels);
 
 circle1 = svg.selectAll("dragPoint")
 .data([aa]).enter()

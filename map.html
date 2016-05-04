@@ -15,11 +15,11 @@
       <div id="filterRadius">
         <h3>Filter points by overlap in region:</h3>
         <p>Select circle:</p>
-        <input type="radio" id="circleA" name="circleRadio" checked="checked"> A<br>
-        <input type="radio" id="circleB" name="circleRadio" > B<br>
+        <input type="radio" id="circleA" onclick="radioButton(1)" name="circleRadio" value="1" checked="checked"> A<br>
+        <input type="radio" id="circleB" onclick="radioButton(2)" name="circleRadio" value="1" > B<br>
 
         <label for="radius">Radius</label>
-        <input type="range" min="0" max="10" value="1" id="fader" step="0.1" oninput="radiusUpdate(value)">
+        <input type="range" id="slider" min="0" max="5" value="1" id="fader" step="0.1" oninput="radiusUpdate(value)">
         <output for="radius" id="radiusSlider">1 mi</output><br>
       </div>
 
@@ -51,7 +51,6 @@
 
             <li><input type="checkbox" onchange="changeCategoryFilter(this)" name="All" id="allBox"/><label for="text23"><b>All</b></label></li>
             <li><input type="checkbox" onchange="changeCategoryFilter(this)" name="None" id="noneBox"/><label for="text24"><b>None</b></label></li>
-
         </ul>
 
 
