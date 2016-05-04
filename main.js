@@ -264,7 +264,7 @@ function makeCircleActive(circle){
 	}
 }
 
-var showCircle = true;
+var showCircle;
 function enableCircles(val){
 	showCircle = val.checked;
 	if (val.checked){
@@ -349,7 +349,7 @@ circle1 = svg.selectAll("dragPoint")
 .style("stroke", "#1d7aed")
 .style("fill", "gray")
 .style("fill-opacity", 0.4)
-.style("visibility", "visibile")
+.style("visibility", "hidden")
 .style("stroke-width", 2);
 
 circle2 = svg.selectAll("dragPoint")
@@ -366,6 +366,7 @@ circle2 = svg.selectAll("dragPoint")
 .style("stroke", "#1d7aed")
 .style("fill", "gray")
 .style("fill-opacity", 0.4)
+.style("visibility", "hidden")
 .style("stroke-width", 2);
 
 loadData({"overlap":false});
