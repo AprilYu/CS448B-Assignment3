@@ -14,7 +14,7 @@
     <div id="filters">
       <div id="filterRadius">
         <h3>Filter points by overlap in region:</h3>
-        <input type="checkbox" class="enableCircles" onchange="enableCircles(this)"><label for="text2">Enable Filters</label>
+        <input type="checkbox" class="enableCircles" onchange="enableCircles(this)"><label for="text2">Enable Circle Filters</label>
         <p>Select circle:</p>
         <input type="radio" id="circleA" onclick="radioButton(1)" name="circleRadio" value="1" checked="checked"> A<br>
         <input type="radio" id="circleB" onclick="radioButton(2)" name="circleRadio" value="1" > B<br>
@@ -27,70 +27,90 @@
       <div id="filterCategory">
         <h3>Crime Categories:</h3>
         <ul class="checkbox-grid">
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Non-criminal"><label for="text2">Non-criminal</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Assault"/><label for="text2">Assault</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Larceny/Theft"/><label for="text3">Larceny/Theft</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Trespass"/><label for="text4">Trespass</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Suspicious"/><label for="text5">Suspicious Occ</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Drug/Narcotic"/><label for="text6">Drug/Narcotic</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Vandalism"/><label for="text7">Vandalism</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Sex Offenses"/><label for="text8">Sex Offenses</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Burglary"/><label for="text9">Burglary</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Warrants"/><label for="text10">Warrants</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Missing Person"/><label for="text11">Missing Person</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Stolen Property"/><label for="text12">Stolen Property</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Drunkenness"/><label for="text13">Drunkenness</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Vehicle Theft"/><label for="text14">Vehicle Theft</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Robbery"/><label for="text15">Robbery</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Kidnapping"/><label for="text16">Kidnapping</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Fraud"/><label for="text17">Fraud</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Liquor Laws"/><label for="text18">Liquor Laws</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Loitering"/><label for="text19">Loitering</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Secondary Codes"/><label for="text20">Secondary Codes</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Embezzlement"/><label for="text21">Embezzlement</label></li>
-            <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Other Offenses"/><label for="text22">Other Offenses</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Non-criminal"><label for="text2">Non-criminal</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Assault"/><label for="text2">Assault</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Larceny/Theft"/><label for="text3">Larceny/Theft</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Trespass"/><label for="text4">Trespass</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Suspicious"/><label for="text5">Suspicious Occ</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Drug/Narcotic"/><label for="text6">Drug/Narcotic</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Vandalism"/><label for="text7">Vandalism</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Sex Offenses"/><label for="text8">Sex Offenses</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Burglary"/><label for="text9">Burglary</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Warrants"/><label for="text10">Warrants</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Missing Person"/><label for="text11">Missing Person</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Stolen Property"/><label for="text12">Stolen Property</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Drunkenness"/><label for="text13">Drunkenness</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Vehicle Theft"/><label for="text14">Vehicle Theft</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Robbery"/><label for="text15">Robbery</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Kidnapping"/><label for="text16">Kidnapping</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Fraud"/><label for="text17">Fraud</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Liquor Laws"/><label for="text18">Liquor Laws</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Loitering"/><label for="text19">Loitering</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Secondary Codes"/><label for="text20">Secondary Codes</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Arson"/><label for="text17">Arson</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Driving Under the Influence"/><label for="text17">DUI</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Prostitution"/><label for="text17">Prostitution</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Suicide"/><label for="text17">Suicide</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="SUSPICIOUS OCC"/><label for="text17">Suspicious</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Weapon Laws"/><label for="text17">Weapon Laws</label></li>
 
-            <li><input type="checkbox" onchange="changeCategoryFilter(this)" name="All" id="allBox"/><label for="text23"><b>All</b></label></li>
-            <li><input type="checkbox" onchange="changeCategoryFilter(this)" name="None" id="noneBox"/><label for="text24"><b>None</b></label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Embezzlement"/><label for="text21">Embezzlement</label></li>
+          <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Other Offenses"/><label for="text22">Other Offenses</label></li>
+
+          <li><input type="checkbox" onchange="changeCategoryFilter(this)" name="All" id="allBox"/><label for="text23"><b>All</b></label></li>
+          <li><input type="checkbox" onchange="changeCategoryFilter(this)" name="None" id="noneBox"/><label for="text24"><b>None</b></label></li>
         </ul>
+      </div>
 
 
-        <div id="filterDayOfWeek">
-          <h3>Days of the Week:</h3>
-          <table>
-        <tr>
-          <td align="center">
-            <input type="checkbox" class="daysOfWeekCheckbox" name="mo" checked onchange="changeDayOfWeekFilter(this)">
-          </td>
-          <td align="center">
-            <input type="checkbox" class="daysOfWeekCheckbox" name="tu" checked onchange="changeDayOfWeekFilter(this)">
-          </td>
-          <td align="center">
-            <input type="checkbox" class="daysOfWeekCheckbox" name="we" checked onchange="changeDayOfWeekFilter(this)">
-          </td>
-          <td align="center">
-            <input type="checkbox" class="daysOfWeekCheckbox" name="th" checked onchange="changeDayOfWeekFilter(this)">
-          </td>
-          <td align="center">
-            <input type="checkbox" class="daysOfWeekCheckbox" name="fr" checked onchange="changeDayOfWeekFilter(this)">
-          </td>
-          <td align="center">
-            <input type="checkbox" class="daysOfWeekCheckbox" name="sa" checked onchange="changeDayOfWeekFilter(this)">
-          </td>
-          <td align="center">
-            <input type="checkbox" class="daysOfWeekCheckbox" name="su" checked onchange="changeDayOfWeekFilter(this)">
-          </td>
-        </tr>
-        <tr>
-          <td align="center">Mo</td>
-          <td align="center">Tu</td>
-          <td align="center">We</td>
-          <td align="center">Th</td>
-          <td align="center">Fr</td>
-          <td align="center">Sa</td>
-          <td align="center">Su</td>
-        </tr>
-      </table>
+      <div id="filterDayOfWeek">
+        <h3>Days of the Week:</h3>
+        <table>
+          <tr>
+            <td align="center">
+              <input type="checkbox" class="daysOfWeekCheckbox" name="mo" checked onchange="changeDayOfWeekFilter(this)">
+            </td>
+            <td align="center">
+              <input type="checkbox" class="daysOfWeekCheckbox" name="tu" checked onchange="changeDayOfWeekFilter(this)">
+            </td>
+            <td align="center">
+              <input type="checkbox" class="daysOfWeekCheckbox" name="we" checked onchange="changeDayOfWeekFilter(this)">
+            </td>
+            <td align="center">
+              <input type="checkbox" class="daysOfWeekCheckbox" name="th" checked onchange="changeDayOfWeekFilter(this)">
+            </td>
+            <td align="center">
+              <input type="checkbox" class="daysOfWeekCheckbox" name="fr" checked onchange="changeDayOfWeekFilter(this)">
+            </td>
+            <td align="center">
+              <input type="checkbox" class="daysOfWeekCheckbox" name="sa" checked onchange="changeDayOfWeekFilter(this)">
+            </td>
+            <td align="center">
+              <input type="checkbox" class="daysOfWeekCheckbox" name="su" checked onchange="changeDayOfWeekFilter(this)">
+            </td>
+          </tr>
+          <tr>
+            <td align="center">Mo</td>
+            <td align="center">Tu</td>
+            <td align="center">We</td>
+            <td align="center">Th</td>
+            <td align="center">Fr</td>
+            <td align="center">Sa</td>
+            <td align="center">Su</td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="filterResolution">
+        <h3>Crime Resolution:</h3>
+        <ul class="checkbox-grid">
+          <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Arrest, booked"><label for="text2">Arrested</label></li>
+          <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Cleared-contact"/><label for="text2">Cleared</label></li>
+          <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Exceptional Clearance"/><label for="text3">Exceptional Clearance</label></li>
+          <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Juvenile Booked"/><label for="text4">Juvenile Booked</label></li>
+          <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Located"/><label for="text5">Located</label></li>
+          <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="None"/><label for="text6">None</label></li>
+        </ul>
       </div>
     </div>
   </div>

@@ -66,13 +66,33 @@ function changeCategoryFilter(checkbox){
 				allBox.checked = false;
 			}
 		}
+	}
+}
 
+var resolutionFilter = [];
+function changeResolutionFilter(checkbox){
+	if (checkbox.checked){
+		resolutionFilter.push(checkbox.name);
+	}else{
+		var index = resolutionFilter.indexOf(checkbox.name);
+		if (index > -1){
+			resolutionFilter.splice(index, 1);
+		}
+	}
+	console.log(resolutionFilter);
+}
+
+function initResolutionFilters(){
+	var boxes = document.getElementsByClassName("resolutionCheckbox");
+	for (var i = 0; i < boxes.length; i++){
+		var box = boxes[i];
+		if (box.checked){
+			resolutionFilter.push(box.name);
+		}
 	}
 
-	console.log(categoryFilter);
-	update({"overlap":true});
-
 }
+initResolutionFilters();
 
 var daysOfWeekFilter = [];
 function initDaysOfWeekFilter(){
@@ -149,7 +169,6 @@ function loadData(filters) {
 
 function update(filters) {
 	plottedPoints = [];
-	console.log("is there any overlap: " + filters.overlap);
 	for (var i = 0; i < allPoints.length; i++){
 		var object = allPoints[i];
 		var center1 = [circle1.attr("cx"), circle1.attr("cy")];
@@ -187,6 +206,20 @@ function update(filters) {
 			}
 		}
 		if (!foundInCategoryFilter) continue;
+
+
+		var foundInResolutionFilter = false;
+		for (var jjj = 0; jjj < resolutionFilter.length; jjj++){
+			// console.log("Object category " + object.Category);
+			// console.log("Finding " + categoryFilter[jj]);
+			if (object.Resolution.toLowerCase().indexOf(resolutionFilter[jjj].toLowerCase()) != -1){
+				foundInResolutionFilter = true;
+				break;
+			}
+		}
+		if (!foundInResolutionFilter) continue;
+
+
 
 		plottedPoints.push(object);
 
