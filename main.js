@@ -149,42 +149,49 @@ function loadData(filters) {
 
 function update(filters) {
 	plottedPoints = [];
-
+	console.log("is there any overlap: " + filters.overlap);
 	for (var i = 0; i < allPoints.length; i++){
 		var object = allPoints[i];
 		var center1 = [circle1.attr("cx"), circle1.attr("cy")];
 		var center2 = [circle2.attr("cx"), circle2.attr("cy")];
-		if (filters["overlap"]) {
+
+		if (showCircle){
+			if (!filters.overlap) break;
+		// if (filters["overlap"]) {
 			var dist1 = d3.geo.distance(object.Location, projection.invert(center1)) * earth_radius_mi;
 			var dist2 = d3.geo.distance(object.Location, projection.invert(center2)) * earth_radius_mi;
 			var radius1 = parseFloat(circle1.attr("r")) * pixelsToMiles;
 			var radius2 = parseFloat(circle2.attr("r")) * pixelsToMiles;
-			if (!(dist1 < radius1 && dist2 < radius2)) continue;
-			//does objects day of week pass filter
-			var foundInDayOfWeekFilter = false;
-			for (var j = 0; j < daysOfWeekFilter.length; j++){
-				if (object.DayOfWeek === daysOfWeekFilter[j]){
-					foundInDayOfWeekFilter = true;
-					break;
-				}
+				if (!(dist1 < radius1 && dist2 < radius2)) continue;
 			}
-			if (!foundInDayOfWeekFilter) continue;
+		// }
 
-			var foundInCategoryFilter = false;
-			for (var jj = 0; jj < categoryFilter.length; jj++){
-				// console.log("Object category " + object.Category);
-				// console.log("Finding " + categoryFilter[jj]);
-				if (object.Category.toLowerCase().indexOf(categoryFilter[jj].toLowerCase()) != -1){
-					foundInCategoryFilter = true;
-					break;
-				}
+		//does objects day of week pass filter
+		var foundInDayOfWeekFilter = false;
+		for (var j = 0; j < daysOfWeekFilter.length; j++){
+			if (object.DayOfWeek === daysOfWeekFilter[j]){
+				foundInDayOfWeekFilter = true;
+				break;
 			}
-			if (!foundInCategoryFilter) continue;
-
-			plottedPoints.push(object);
-
 		}
+		if (!foundInDayOfWeekFilter) continue;
+
+
+		var foundInCategoryFilter = false;
+		for (var jj = 0; jj < categoryFilter.length; jj++){
+			// console.log("Object category " + object.Category);
+			// console.log("Finding " + categoryFilter[jj]);
+			if (object.Category.toLowerCase().indexOf(categoryFilter[jj].toLowerCase()) != -1){
+				foundInCategoryFilter = true;
+				break;
+			}
+		}
+		if (!foundInCategoryFilter) continue;
+
+		plottedPoints.push(object);
+
 	}
+
 
 	var selection = svg.selectAll(".circle")
 	.data(plottedPoints, function(d) {
@@ -257,6 +264,27 @@ function makeCircleActive(circle){
 	}
 }
 
+var showCircle = true;
+function enableCircles(val){
+	showCircle = val.checked;
+	if (val.checked){
+		console.log("enable circle filters");
+		document.getElementById('circle1_id').style.visibility = "visible";
+		document.getElementById('circle2_id').style.visibility = "visible";
+		// update({"overlap":true});
+
+	}else{
+		console.log("enable circle filters");
+		document.getElementById('circle1_id').style.visibility = "hidden";
+		document.getElementById('circle2_id').style.visibility = "hidden";
+		// update({"overlap":false});
+
+		console.log(document.getElementById('circle1_id'));
+	}
+	console.log("showCircle? " + showCircle);
+	filterPoints();
+}
+
 var circle1;
 var drag1 = d3.behavior.drag()
 .on('dragstart', function() {
@@ -315,11 +343,13 @@ circle1 = svg.selectAll("dragPoint")
 })
 .attr("cy", function (d) { return projection(d)[1]; })
 .attr("r", (parseFloat(rad) * milesToPixels) + "px")
+.attr("id", "circle1_id")
 .call(drag1)
 .attr("fill", "none")
 .style("stroke", "#1d7aed")
 .style("fill", "gray")
 .style("fill-opacity", 0.4)
+.style("visibility", "visibile")
 .style("stroke-width", 2);
 
 circle2 = svg.selectAll("dragPoint")
@@ -330,6 +360,7 @@ circle2 = svg.selectAll("dragPoint")
 })
 .attr("cy", function (d) { return projection(d)[1]; })
 .attr("r", (parseFloat(rad) * milesToPixels) +"px")
+.attr("id", "circle2_id")
 .call(drag2)
 .attr("fill", "none")
 .style("stroke", "#1d7aed")
