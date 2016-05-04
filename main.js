@@ -30,17 +30,38 @@ function getVals(){
 	// Get slider values
   var parent = this.parentNode;
   var slides = parent.getElementsByTagName("input");
-    var slide1 = parseFloat( slides[0].value );
-    var slide2 = parseFloat( slides[1].value );
+    var slide1 = parseInt( slides[0].value );
+    var slide2 = parseInt( slides[1].value );
   // Neither slider will clip the other, so make sure we determine which is larger
   if( slide1 > slide2 ){ var tmp = slide2; slide2 = slide1; slide1 = tmp; }
-
+	// slider 2 is the larger one
   var displayElement = parent.getElementsByClassName("rangeValues")[0];
-      displayElement.innerHTML = slide1 + " - " + slide2;
+      displayElement.innerHTML = parseTime(slide1) + " - " + parseTime(slide2);
 		timePoints.push(slide1);
 		timePoints.push(slide2);
 		filterPoints();
 }
+
+function parseTime(val) {
+	var hour = Math.floor(val / 60);
+	var ampm;
+	if (hour < 12) {
+		ampm = "am"
+	} else {
+		ampm = "pm"
+	}
+	if (hour == 0) {
+		hour = 12
+	} else {
+		hour = hour % 12;
+	}
+	var minute = val % 60;
+	if (minute.toString().length < 2) {
+		minute = '0' + minute;
+	}
+	return hour + ":" + minute + " " + ampm;
+}
+
 window.onload = function(){
   // Initialize Sliders
   var sliderSections = document.getElementsByClassName("range-slider");
