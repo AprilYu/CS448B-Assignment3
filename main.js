@@ -45,8 +45,10 @@ window.onload = function(){
   // Initialize Sliders
   var sliderSections = document.getElementsByClassName("range-slider");
       for( var x = 0; x < sliderSections.length; x++ ){
-        var sliders = sliderSections[x].getElementsByTagName("input");
+        var sliders = sliderSections[x].getElementsByClassName("hourSliders");
         for( var y = 0; y < sliders.length; y++ ){
+					console.log("ASdf");
+
           if( sliders[y].type ==="range" ){
             sliders[y].oninput = getVals;
             // Manually trigger event first time to display values
