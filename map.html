@@ -4,7 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <title>My project</title>
   <script src="http://d3js.org/d3.v3.min.js"></script>
-
+  <link rel="stylesheet" type="text/css"
+            href="https://www.google.com/fonts#QuickUsePlace:quickUse/Family:Average">
   <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -12,19 +13,19 @@
     <div id="map">
     </div>
     <div id="filters">
-      <div id="filterRadius">
+      <div id="filterRadius" class="bottomBorder">
         <h3>Filter points by overlap in region:</h3>
         <input type="checkbox" class="enableCircles" onchange="enableCircles(this)"><label for="text2">Enable Circle Filters</label>
         <p>Select circle:</p>
         <input type="radio" id="circleA" onclick="radioButton(1)" name="circleRadio" value="1" checked="checked"> A<br>
         <input type="radio" id="circleB" onclick="radioButton(2)" name="circleRadio" value="1" > B<br>
 
-        <label for="radius">Radius</label>
-        <input type="range" id="slider" min="0" max="5" value="1" id="fader" step="0.1" oninput="radiusUpdate(value)">
+        <span>Radius</span>
+        <input type="range" class="last" id="slider" min="0" max="5" value="1" id="fader" step="0.1" oninput="radiusUpdate(value)">
         <output for="radius" id="radiusSlider">1 mi</output><br>
       </div>
 
-      <div id="filterCategory">
+      <div id="filterCategory" class="bottomBorder">
         <h3>Crime Categories:</h3>
         <ul class="checkbox-grid">
           <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Non-criminal"><label for="text2">Non-criminal</label></li>
@@ -58,7 +59,7 @@
           <li><input type="checkbox" checked="yes" class="categoryCheckbox" onchange="changeCategoryFilter(this)" name="Other Offenses"/><label for="text22">Other Offenses</label></li>
 
           <li><input type="checkbox" onchange="changeCategoryFilter(this)" name="All" id="allBox"/><label for="text23"><b>All</b></label></li>
-          <li><input type="checkbox" onchange="changeCategoryFilter(this)" name="None" id="noneBox"/><label for="text24"><b>None</b></label></li>
+          <li><input type="checkbox" onchange="changeCategoryFilter(this)" name="None" id="noneBox" class="last"/><label for="text24"><b>None</b></label></li>
         </ul>
       </div>
 
@@ -106,7 +107,7 @@
         <ul class="checkbox-grid">
           <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Arrest, booked"><label for="text2">Arrested</label></li>
           <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Cleared-contact"/><label for="text2">Cleared</label></li>
-          <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Exceptional Clearance"/><label for="text3">Exceptional Clearance</label></li>
+          <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Exceptional Clearance"/><label for="text3">Exceptional</label></li>
           <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Juvenile Booked"/><label for="text4">Juvenile Booked</label></li>
           <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="Located"/><label for="text5">Located</label></li>
           <li><input type="checkbox" checked="yes" class="resolutionCheckbox" onchange="changeResolutionFilter(this)" name="None"/><label for="text6">None</label></li>
