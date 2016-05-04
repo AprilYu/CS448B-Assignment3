@@ -1,3 +1,4 @@
+
 /*
 * Called when the slider is changing, updates the radius of the circle that
 * correspondes to the radio button selection
@@ -22,6 +23,38 @@ function radiusUpdate(vol) {
 	filterPoints();
 }
 
+
+var timePoints = [];
+function getVals(){
+	timePoints = [];
+	// Get slider values
+  var parent = this.parentNode;
+  var slides = parent.getElementsByTagName("input");
+    var slide1 = parseFloat( slides[0].value );
+    var slide2 = parseFloat( slides[1].value );
+  // Neither slider will clip the other, so make sure we determine which is larger
+  if( slide1 > slide2 ){ var tmp = slide2; slide2 = slide1; slide1 = tmp; }
+
+  var displayElement = parent.getElementsByClassName("rangeValues")[0];
+      displayElement.innerHTML = slide1 + " - " + slide2;
+		timePoints.push(slide1);
+		timePoints.push(slide2);
+		filterPoints();
+}
+window.onload = function(){
+  // Initialize Sliders
+  var sliderSections = document.getElementsByClassName("range-slider");
+      for( var x = 0; x < sliderSections.length; x++ ){
+        var sliders = sliderSections[x].getElementsByTagName("input");
+        for( var y = 0; y < sliders.length; y++ ){
+          if( sliders[y].type ==="range" ){
+            sliders[y].oninput = getVals;
+            // Manually trigger event first time to display values
+            sliders[y].oninput();
+          }
+        }
+      }
+};
 
 var categoryFilter = [];
 function initCategoryFilters(){
@@ -67,32 +100,8 @@ function changeCategoryFilter(checkbox){
 			}
 		}
 	}
+	filterPoints();
 }
-
-var resolutionFilter = [];
-function changeResolutionFilter(checkbox){
-	if (checkbox.checked){
-		resolutionFilter.push(checkbox.name);
-	}else{
-		var index = resolutionFilter.indexOf(checkbox.name);
-		if (index > -1){
-			resolutionFilter.splice(index, 1);
-		}
-	}
-	console.log(resolutionFilter);
-}
-
-function initResolutionFilters(){
-	var boxes = document.getElementsByClassName("resolutionCheckbox");
-	for (var i = 0; i < boxes.length; i++){
-		var box = boxes[i];
-		if (box.checked){
-			resolutionFilter.push(box.name);
-		}
-	}
-
-}
-initResolutionFilters();
 
 var daysOfWeekFilter = [];
 function initDaysOfWeekFilter(){
@@ -103,7 +112,6 @@ function initDaysOfWeekFilter(){
 			daysOfWeekFilter.push(convertWeekdayAbreviations(box.name));
 		}
 	}
-	console.log(daysOfWeekFilter);
 }
 function convertWeekdayAbreviations(day){
 	var conversions = {
@@ -127,9 +135,9 @@ function changeDayOfWeekFilter(checkbox){
 			daysOfWeekFilter.splice(index, 1);
 		}
 	}
-	update({"overlap":true});
-	console.log(daysOfWeekFilter);
+	filterPoints();
 }
+
 initDaysOfWeekFilter();
 /*
 * Called when filter button is pushed, filters to only points in the overlap
@@ -143,9 +151,11 @@ function filterPoints() {
 	var distance = dist(center1, center2);
 	var sum_radii = radius1+radius2;
 	var diff_radii = Math.abs(radius1-radius2);
-	// console.log("distance: " + distance)
-	// console.log("sum: " + sum_radii)
-	// console.log("difference: " + diff_radii)
+
+	if (!showCircle){
+		update({"overlap":false});
+		return;
+	}
 	if (distance < sum_radii) {
 		update({"overlap":true});
 	} else {
@@ -198,8 +208,6 @@ function update(filters) {
 
 		var foundInCategoryFilter = false;
 		for (var jj = 0; jj < categoryFilter.length; jj++){
-			// console.log("Object category " + object.Category);
-			// console.log("Finding " + categoryFilter[jj]);
 			if (object.Category.toLowerCase().indexOf(categoryFilter[jj].toLowerCase()) != -1){
 				foundInCategoryFilter = true;
 				break;
@@ -208,18 +216,8 @@ function update(filters) {
 		if (!foundInCategoryFilter) continue;
 
 
-		var foundInResolutionFilter = false;
-		for (var jjj = 0; jjj < resolutionFilter.length; jjj++){
-			// console.log("Object category " + object.Category);
-			// console.log("Finding " + categoryFilter[jj]);
-			if (object.Resolution.toLowerCase().indexOf(resolutionFilter[jjj].toLowerCase()) != -1){
-				foundInResolutionFilter = true;
-				break;
-			}
-		}
-		if (!foundInResolutionFilter) continue;
-
-
+		var t = object.Time.substring(0, object.Time.indexOf(':'));
+		if (parseInt(t) < parseInt(timePoints[0]) || parseInt(t) > parseInt(timePoints[1])) continue;
 
 		plottedPoints.push(object);
 
@@ -301,20 +299,12 @@ var showCircle;
 function enableCircles(val){
 	showCircle = val.checked;
 	if (val.checked){
-		console.log("enable circle filters");
 		document.getElementById('circle1_id').style.visibility = "visible";
 		document.getElementById('circle2_id').style.visibility = "visible";
-		// update({"overlap":true});
-
 	}else{
-		console.log("enable circle filters");
 		document.getElementById('circle1_id').style.visibility = "hidden";
 		document.getElementById('circle2_id').style.visibility = "hidden";
-		// update({"overlap":false});
-
-		console.log(document.getElementById('circle1_id'));
 	}
-	console.log("showCircle? " + showCircle);
 	filterPoints();
 }
 
@@ -343,7 +333,6 @@ filterPoints();})
 
 
 function radioButton(value){
-	console.log("radio");
 	if (value === 1){
 		makeCircleActive(circle1);
 	}else{
@@ -360,13 +349,7 @@ geo_dist = d3.geo.distance(aa, bb) * earth_radius_mi;
 var pixelsToMiles = geo_dist / pixel_dist;
 var milesToPixels = pixel_dist / geo_dist;
 
-console.log("pixels: " + pixel_dist);
-console.log("miles: "+ geo_dist);
-
 rad = document.querySelector('#radiusSlider').value;
-
-console.log(parseFloat(rad) * milesToPixels);
-console.log(milesToPixels);
 
 circle1 = svg.selectAll("dragPoint")
 .data([aa]).enter()
